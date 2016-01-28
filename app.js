@@ -41,9 +41,9 @@ var geckoMeter = {
 // ChartMogul API ///////
 /////////////////////////
 
-function getMetrics(callback, metric, start, end, increment, widgetKey, min, max) {
+function getMetrics(callback, options) {
 	
-	var p = '/v1/metrics/all?start-date='+start+'&end-date='+end+'&interval='+increment;
+	var p = '/v1/metrics/all?start-date='+options.startDate+'&end-date='+options.endDate+'&interval='+options.interval;
 	
 	return https.get({
 		host: 'api.chartmogul.com',
@@ -56,7 +56,7 @@ function getMetrics(callback, metric, start, end, increment, widgetKey, min, max
 		});
 		response.on('end', function() {
 			var parsed = JSON.parse(body);
-			callback(parsed, widgetKey, metric, min, max);
+			callback(parsed, options);
 		});
 	});
 }
@@ -67,8 +67,8 @@ function getMetrics(callback, metric, start, end, increment, widgetKey, min, max
 
 var foo = new Geckoboard({api_key: geckoKey});
 
-function populateLineGraph(data, widgetKey, metric) {
-	var bar = foo.line(widgetKey);
+function populateLineGraph(data, options) {
+	var bar = foo.line(options.widgetKey);
 
 	var series = [{
 			"data": []
@@ -87,7 +87,7 @@ function populateLineGraph(data, widgetKey, metric) {
 	}
 
 	for (var i = data.entries.length - 1; i >= 0; i--) {
-		series[0]["data"].unshift(data.entries[i][metric] / 100);
+		series[0]["data"].unshift(data.entries[i][options.metric] / 100);
 		axis.x["labels"].unshift(data.entries[i].date);
 	};
 
@@ -96,17 +96,17 @@ function populateLineGraph(data, widgetKey, metric) {
 	})
 }
 
-function populateGeckoMeter(data, widgetKey, metric, minimum, maximum) {
-	var bar = foo.geckoMeter(widgetKey);
+function populateGeckoMeter(data, options) {
+	var bar = foo.geckoMeter(options.widgetKey);
 
-	var value = data.entries[data.entries.length-1][metric] / 100;
+	var value = data.entries[data.entries.length-1][options.metric] / 100;
 
 	var min = {
-	  "value" : minimum
+	  "value" : options.min
 	}
 
 	var max = {
-		"value": maximum
+		"value": options.max
 	}
 
 	var type = 'standard';
@@ -117,11 +117,6 @@ function populateGeckoMeter(data, widgetKey, metric, minimum, maximum) {
 }
 
 
-
-function postMetrics(data) {
-	populateLineGraph(data);
-}
-
 /////////////////////////
 // Initialize ///////////
 /////////////////////////
@@ -130,24 +125,14 @@ function init() {
 	if (lineGraph.enabled) {
 		getMetrics(
 			populateLineGraph,
-			lineGraph.metric,
-			lineGraph.startDate,
-			lineGraph.endDate,
-			lineGraph.interval,
-			lineGraph.widgetKey
+			lineGraph
 			)
 	}
 
 	if (geckoMeter.enabled) {
 		getMetrics(
 			populateGeckoMeter,
-			geckoMeter.metric,
-			geckoMeter.startDate,
-			geckoMeter.endDate,
-			geckoMeter.interval,
-			geckoMeter.widgetKey,
-			geckoMeter.min,
-			geckoMeter.max
+			geckoMeter
 			)
 	}
 }
@@ -159,6 +144,11 @@ function refresh() {
 }
 
 refresh();
+
+
+
+
+
 
 
 
