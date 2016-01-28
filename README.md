@@ -2,7 +2,7 @@
 
 A simple ChartMogul - Geckoboard integration written in Node.js 
 
-![](example.jpg)
+![](example.png)
 
 ## Instructions for running locally
 
