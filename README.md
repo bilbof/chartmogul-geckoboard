@@ -25,7 +25,7 @@ To modify the integration locally and see the changes reflected immediately with
 
   Open app.js, and add your `chartmogulApiToken` & `chartmogulSecretKey` found at [https://app.chartmogul.com/#admin/api](https://app.chartmogul.com/#admin/api) (admin permissions required).
   
-  Next, add your `geckoKey`. You can find this at [https://cmdev.geckoboard.com/account/details](https://cmdev.geckoboard.com/account/details).
+  Next, add your `geckoKey`. You can find this at https://<your_geckoboard_subdomain>.geckoboard.com/account/details.
   
 3. Create two custom widgets in your Geckoboard
 
