@@ -1,0 +1,21 @@
+{
+  "name": "geckoboard",
+  "version": "1.0.0",
+  "description": "A ChartMogul library for Geckoboard",
+  "main": "request-node.js",
+  "dependencies": {
+    "express": "^4.13.4",
+    "geckoboard-push": "^2.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "chartmogul",
+    "geckoboard",
+    "node"
+  ],
+  "author": "Bill Franklin <bill@chartmogul.com>",
+  "license": "ISC"
+}
